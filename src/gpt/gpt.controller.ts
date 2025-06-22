@@ -16,6 +16,7 @@ import { GptService } from './gpt.service';
 import {
   AudioToTextDto,
   ImageGenerationDto,
+  ImageVariationDto,
   OrthographyDto,
   ProsConsDiscusserDto,
   TextToAudioDto,
@@ -150,5 +151,10 @@ export class GptController {
     res.status(HttpStatus.OK);
 
     res.sendFile(filePath);
+  }
+
+  @Post('image-variation')
+  async imageVariation(@Body() imageVariationDto: ImageVariationDto) {
+    return await this.gptService.generateImageVariation(imageVariationDto);
   }
 }

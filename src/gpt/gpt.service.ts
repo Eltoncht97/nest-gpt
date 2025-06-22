@@ -4,6 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   audioToText,
   imageGenerationUseCase,
+  imageVariationUseCase,
   orthographyCheckUseCase,
   prosConsDicusserStreamUseCase,
   prosConsDicusserUseCase,
@@ -13,6 +14,7 @@ import {
 } from './use-cases';
 import {
   AudioToTextDto,
+  ImageVariationDto,
   OrthographyDto,
   ProsConsDiscusserDto,
   TextToAudioDto,
@@ -88,5 +90,9 @@ export class GptService {
       throw new NotFoundException(`Image ${fileName} was not found`);
 
     return filePath;
+  }
+
+  async generateImageVariation({ baseImage }: ImageVariationDto) {
+    return imageVariationUseCase(this.openai, { baseImage });
   }
 }
