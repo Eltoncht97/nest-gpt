@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as sharp from 'sharp';
+
 import { InternalServerErrorException } from '@nestjs/common';
 
 export const downloadImageAsPng = async (
@@ -13,12 +14,13 @@ export const downloadImageAsPng = async (
     throw new InternalServerErrorException('Download image was not possible');
   }
 
-  const folderPath = path.resolve('./', './generated/images');
+  const folderPath = path.resolve('./', './generated/images/');
   fs.mkdirSync(folderPath, { recursive: true });
 
   const imageNamePng = `${new Date().getTime()}.png`;
   const buffer = Buffer.from(await response.arrayBuffer());
 
+  // fs.writeFileSync( `${ folderPath }/${ imageNamePng }`, buffer );
   const completePath = path.join(folderPath, imageNamePng);
 
   await sharp(buffer).png().ensureAlpha().toFile(completePath);
@@ -41,10 +43,7 @@ export const downloadBase64ImageAsPng = async (
 
   const completePath = path.join(folderPath, imageNamePng);
   // Transformar a RGBA, png // Así lo espera OpenAI
-  await sharp(imageBuffer)
-    .png()
-    .ensureAlpha()
-    .toFile(path.join(folderPath, imageNamePng));
+  await sharp(imageBuffer).png().ensureAlpha().toFile(completePath);
 
   return fullPath ? completePath : imageNamePng;
 };

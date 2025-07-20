@@ -7,14 +7,14 @@ interface Options {
 }
 
 export const imageVariationUseCase = async (
-  openAi: OpenAI,
+  openai: OpenAI,
   options: Options,
 ) => {
   const { baseImage } = options;
 
   const pngImagePath = await downloadImageAsPng(baseImage, true);
 
-  const response = await openAi.images.createVariation({
+  const response = await openai.images.createVariation({
     model: 'dall-e-2',
     image: fs.createReadStream(pngImagePath),
     n: 1,
